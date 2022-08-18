@@ -13,38 +13,40 @@ function Filter() {
   return (
     <TableFilterLayout
       title='知识库管理'
-      search={{
-        type: 'selectInput',
-        name: 'type',
-        placeholder: '请输入商家名称',
-        options: [
-          {
-            label: '全部',
-            value: 'all'
-          },
-          {
-            label: 'Small',
-            value: 1,
-          },
-          {
-            label: 'Middle',
-            value: 2,
-          },
-          {
-            label: 'Large',
-            value: 3,
-          }
-        ]
-      }}
+      // search={{
+      //   type: 'selectInput',
+      //   name: 'type',
+      //   placeholder: '请输入商家名称',
+      //   options: [
+      //     {
+      //       label: '全部',
+      //       value: 'all'
+      //     },
+      //     {
+      //       label: 'Small',
+      //       value: 1,
+      //     },
+      //     {
+      //       label: 'Middle',
+      //       value: 2,
+      //     },
+      //     {
+      //       label: 'Large',
+      //       value: 3,
+      //     }
+      //   ]
+      // }}
       btns={[
         <Button type='primary'>新建项目</Button>
       ]}
-      extra={[
-        <div>extra</div>
-      ]}
+      // extra={[
+      //   <div>extra</div>
+      // ]}
       mainFilterOptions={{
-        isRT: false,
-        isFold: false,
+        isRT: true,
+        // isFold: true,
+        // showBgc: true,
+        // isExpert: true,
         initialValues: {
           productType: 'one',
           userName: 'jack',
@@ -77,11 +79,11 @@ function Filter() {
       <Form.Item label="时间范围" name="time">
         <RangePicker />
       </Form.Item>
-      {/* <Form.Item label="时间范围" name="time2">
-        <RangePicker />
+      <Form.Item label="商品名称" name="productName2">
+        <Input />
       </Form.Item>
-      <Form.Item label="时间范围" name="time4">
-        <RangePicker />
+      {/* <Form.Item label="商品名称" name="productName3">
+        <Input />
       </Form.Item> */}
     </TableFilterLayout>
   );

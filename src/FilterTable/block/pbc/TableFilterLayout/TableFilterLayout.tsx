@@ -1,5 +1,6 @@
-import React, { ReactElement, useMemo } from 'react';
+import React, { ReactElement, useMemo, useState } from 'react';
 import { Form, Row, Col, Button } from '@perfma/heaven';
+import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import SearchBlock from './SearchBlock';
 import stl from './index.module.scss';
 
@@ -18,6 +19,8 @@ interface IMainFilterOptions {
   isRT: boolean;
   isFold: boolean;
   initialValues?: any;
+  showBgc?: boolean;
+  isExpert?: boolean;
 }
 
 interface IProps {
@@ -31,7 +34,7 @@ interface IProps {
   defaultValue?: any;
 }
 
-function TableFilterLayout({ 
+function TableFilterLayout({
   title,
   search,
   btns,
@@ -39,8 +42,10 @@ function TableFilterLayout({
   mainFilterOptions,
   children,
   defaultValue,
-  onChange
+  onChange,
 }: IProps) {
+  const [isFlodOpen, setIsFlodOpen] = useState(false);
+  const [isExpertOpen, setIsExpertOpen] = useState(false);
 
   const btnsBlock = useMemo(() => {
     if (btns) {
@@ -50,101 +55,148 @@ function TableFilterLayout({
   }, [btns]);
 
   const extraBlock = useMemo(() => {
-    if (extra) return <div style={{paddingLeft: '8px'}}>{extra}</div>;
+    if (extra) return <div style={{ paddingLeft: '8px' }}>{extra}</div>;
     return '';
   }, []);
 
   const formatFormVals = (vals) => {
-    return Object.keys(vals).reduce((draft, key) => { 
+    return Object.keys(vals).reduce((draft, key) => {
       if (vals[key] !== undefined) {
         draft[key] = vals[key];
       }
       return draft;
-     }, {});
-  }
+    }, {});
+  };
 
   const handleRTSearch = (_, allVals) => {
     onChange(formatFormVals(allVals));
+  };
+
+  const handleExpertClick = () => {
+    setIsExpertOpen(!isExpertOpen);
   }
 
   const createCommonChildren = () => {
     const { isFold } = mainFilterOptions;
     if (children.length) {
-      if(isFold) {
+      const nextChildren = [];
+      const fullLineCount = Math.floor(children.length / 4);
+      const remainCount = children.length % 4;
+
+      if (isFold && !isFlodOpen) {
         // 需要折叠
-        return children;
+        if (fullLineCount) {
+          nextChildren.push(
+            <Row className={stl.singleRow}>
+              <Col span={18}>
+                <Row>
+                  <Col span={8}>{children[0]}</Col>
+                  <Col span={8}>{children[1]}</Col>
+                  <Col span={8}>{children[2]}</Col>
+                </Row>
+              </Col>
+              <Col span={6} className={stl.btnsBox}>
+                <Button style={{ marginRight: '8px' }}>重置</Button>
+                <Button type="primary">查询</Button>
+                <Button onClick={() => setIsFlodOpen(true)} type='link'>更多<DownOutlined /></Button>
+              </Col>
+            </Row>,
+          );
+          return nextChildren;
+        }
       }
 
-      const nextChildren = children.reduce((draft, cur) => {
-        draft.push(
-          <Col span={6}>{cur}</Col>
+      for (let i = 0; i < fullLineCount; i++) {
+        nextChildren.push(
+          <Row className={stl.singleRow}>
+            <Col span={6}>{children[i * 4]}</Col>
+            <Col span={6}>{children[i * 4 + 1]}</Col>
+            <Col span={6}>{children[i * 4 + 2]}</Col>
+            <Col span={6}>{children[i * 4 + 3]}</Col>
+          </Row>,
         );
-        return draft;
-      }, []);
-      nextChildren.push(
-        <Col span={6}>
-          <Button>重置</Button>
-          <Button type="primary">查询</Button>
-        </Col>
-      );
+      }
+
+      if (remainCount) {
+        const partChildren = [];
+        let partChildCount = 0;
+        while (partChildCount < remainCount) {
+          partChildren.push(<Col span={8}>{children[fullLineCount * 4 + partChildCount]}</Col>);
+          partChildCount++;
+        }
+        nextChildren.push(
+          <Row className={stl.singleRow}>
+            <Col span={18}>
+              <Row>{partChildren}</Row>
+            </Col>
+            <Col span={6} className={stl.btnsBox}>
+              <Button style={{ marginRight: '8px' }}>重置</Button>
+              <Button type="primary">查询</Button>
+              {
+                fullLineCount && isFold ? (<Button onClick={() => setIsFlodOpen(false)} type='link'>收起<UpOutlined /></Button>): null
+              }
+            </Col>
+          </Row>,
+        );
+      } else {
+        nextChildren.push(
+          <Row justify="end" className={stl.singleRow}>
+            <Col span={6} className={stl.btnsBox}>
+              <Button style={{ marginRight: '8px' }}>重置</Button>
+              <Button type="primary">查询</Button>
+              {
+                fullLineCount && isFold ? (<Button onClick={() => setIsFlodOpen(false)} type='link'>收起<UpOutlined /></Button>): null
+              }
+            </Col>
+          </Row>,
+        );
+      }
       return nextChildren;
     }
     return children;
-  }
+  };
 
   const mainFilterBlock = useMemo(() => {
+    if (!isExpertOpen && mainFilterOptions.isExpert) return '';
     if (!children) return '';
-    const { isRT, initialValues={} } = mainFilterOptions;
+    const { isRT, initialValues = {} } = mainFilterOptions;
 
-    if(isRT) {
+    if (isRT) {
       return (
-        <div className={stl.mainFilter}>
+        <div className={`${stl.baseMainFilter} ${mainFilterOptions.showBgc ? stl.grayBg: ''}`}>
           <Form
             colon={false}
-            layout='inline'
+            layout="inline"
             onValuesChange={handleRTSearch}
             initialValues={initialValues}
           >
             {children}
           </Form>
         </div>
-      )
+      );
     }
 
     return (
-      <div className={stl.mainFilter}>
-        <Form
-          colon={false}
-          layout='horizontal'
-        >
+      <div className={`${stl.baseMainFilter} ${stl.commonMainFilter} ${mainFilterOptions.showBgc ? stl.grayBg: ''}`}>
+        <Form colon={false} layout="horizontal">
           {createCommonChildren()}
         </Form>
       </div>
-    )
-
-  }, [children, mainFilterOptions]);
+    );
+  }, [children, mainFilterOptions, isFlodOpen, isExpertOpen]);
 
   return (
     <div className={stl.root}>
       <div className={stl.mainHeader}>
         <div className={stl.mainLeft}>{title}</div>
         <div className={stl.mainRight}>
-          <SearchBlock 
-            search={search}
-            onChange={onChange}
-            defaultVal={defaultValue}
-          />
-          {
-            btnsBlock
-          }
-          {
-            extraBlock
-          }
+          {mainFilterOptions.isExpert && <Button type='link' onClick={handleExpertClick}>高级筛选<DownOutlined /></Button>}
+          {search && <SearchBlock search={search} onChange={onChange} defaultVal={defaultValue} />}
+          {btnsBlock}
+          {extraBlock}
         </div>
       </div>
-      {
-        mainFilterBlock
-      }
+      {mainFilterBlock}
     </div>
   );
 }
