@@ -1,0 +1,83 @@
+{
+  "private": true,
+  "name": "perfma-jigsaw",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "dumi dev",
+    "docs:build": "dumi build",
+    "docs:deploy": "gh-pages -d docs-dist",
+    "build": "father build",
+    "deploy": "npm run docs:build && npm run docs:deploy",
+    "prettier": "prettier --write \"**/*.{js,jsx,tsx,ts,less,md,json}\"",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "module": "dist/esm/index.js",
+  "typings": "dist/esm/index.d.ts",
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ]
+  },
+  "dependencies": {
+    "@perfma/heaven": "^1.1.1",
+    "antd": "^4.22.4",
+    "react": "^18.0.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.18.10",
+    "@babel/core": "^7.18.10",
+    "@testing-library/jest-dom": "^5.15.1",
+    "@testing-library/react": "^13.0.0",
+    "@types/jest": "^27.0.3",
+    "@umijs/fabric": "^2.8.1",
+    "@umijs/plugin-sass": "^1.1.1",
+    "@umijs/test": "^3.0.5",
+    "babel-import-plugin": "^1.0.0",
+    "babel-loader": "^8.2.5",
+    "babel-plugin-import": "^1.13.5",
+    "commander": "^9.4.0",
+    "css-loader": "^6.7.1",
+    "css-minimizer-webpack-plugin": "^4.0.0",
+    "detect-port": "^1.3.0",
+    "dumi": "^1.1.0",
+    "execa": "^6.1.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "father": "^4.0.0-rc.2",
+    "fs-extra": "^10.1.0",
+    "gh-pages": "^3.0.0",
+    "glob": "^8.0.3",
+    "html-webpack-plugin": "^5.5.0",
+    "imagemin": "6.1.0",
+    "imagemin-mozjpeg": "8.0.0",
+    "imagemin-pngquant": "8.0.0",
+    "less": "^4.1.3",
+    "less-loader": "^7",
+    "lint-staged": "^10.0.7",
+    "mini-css-extract-plugin": "^2.6.1",
+    "postcss-loader": "^7.0.1",
+    "prettier": "^2.2.1",
+    "progress-bar-webpack-plugin": "^2.1.0",
+    "puppeteer": "^16.1.0",
+    "sass-loader": "^13.0.2",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.3",
+    "ts-loader": "^9.3.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "yorkie": "^2.0.0"
+  }
+}

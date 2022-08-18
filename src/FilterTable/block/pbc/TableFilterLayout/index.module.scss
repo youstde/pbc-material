@@ -1,0 +1,30 @@
+.root {
+  .mainHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    margin-bottom: 8px;
+    .mainLeft {
+      font-size:18px;
+      line-height: 32px;
+    }
+   
+    .mainRight {
+      display: flex;
+      .btnsContainer {
+        padding-left: 8px;
+        display: flex;
+        &>button {
+          display: block;
+        }
+      }
+    }
+  }
+  .mainFilter {
+    padding: 8px 0;
+    // background-color: #f3f5f9;
+    :global(.ant-form-item-label) {
+      width: 100px;
+    }
+  }
+}
