@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Form, Select, Input, DatePicker } from '@perfma/heaven';
-import TableFilterLayout from './pbc/TableFilterLayout';
+import TableFilterLayout from '@perfma/pbc-filter-layout';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -8,37 +8,35 @@ const { RangePicker } = DatePicker;
 function Filter() {
   const handleOnChange = (vals) => {
     console.log('vals', vals);
-  }
+  };
 
   return (
     <TableFilterLayout
-      title='知识库管理'
-      // search={{
-      //   type: 'selectInput',
-      //   name: 'type',
-      //   placeholder: '请输入商家名称',
-      //   options: [
-      //     {
-      //       label: '全部',
-      //       value: 'all'
-      //     },
-      //     {
-      //       label: 'Small',
-      //       value: 1,
-      //     },
-      //     {
-      //       label: 'Middle',
-      //       value: 2,
-      //     },
-      //     {
-      //       label: 'Large',
-      //       value: 3,
-      //     }
-      //   ]
-      // }}
-      btns={[
-        <Button type='primary'>新建项目</Button>
-      ]}
+      title="知识库管理"
+      search={{
+        type: 'selectInput',
+        name: 'type',
+        placeholder: '请输入商家名称',
+        options: [
+          {
+            label: '全部',
+            value: 'all',
+          },
+          {
+            label: 'Small',
+            value: 1,
+          },
+          {
+            label: 'Middle',
+            value: 2,
+          },
+          {
+            label: 'Large',
+            value: 3,
+          },
+        ],
+      }}
+      btns={[<Button type="primary">新建项目</Button>]}
       // extra={[
       //   <div>extra</div>
       // ]}
@@ -51,7 +49,7 @@ function Filter() {
           productType: 'one',
           userName: 'jack',
           productName: '123',
-        }
+        },
       }}
       defaultValue={{
         type: {
@@ -63,14 +61,14 @@ function Filter() {
     >
       <Form.Item label="告警类型" name="productType">
         <Select>
-          <Option value='one'>one</Option>
-          <Option value='two'>two</Option>
+          <Option value="one">one</Option>
+          <Option value="two">two</Option>
         </Select>
       </Form.Item>
       <Form.Item label="修改人" name="userName">
         <Select>
-          <Option value='jack'>jack</Option>
-          <Option value='tom'>tom</Option>
+          <Option value="jack">jack</Option>
+          <Option value="tom">tom</Option>
         </Select>
       </Form.Item>
       <Form.Item label="商品名称" name="productName">

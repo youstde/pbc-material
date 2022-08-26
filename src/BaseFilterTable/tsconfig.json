@@ -1,8 +1,0 @@
-{
-  "extends": "../../build/tsconfig.settings.json",
-  "compilerOptions": {
-    "rootDir": "./",
-    "baseUrl": "./",
-    "outDir": "./dist/",
-  }
-}
